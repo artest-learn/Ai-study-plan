@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Learning Roadmap — From Local LLMs to SaaS</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0A0A0F; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0A0A0F; }
+    ::-webkit-scrollbar-thumb { background: #1E1E2E; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    const phases = [
+      {
+        id: 1,
+        title: "Foundation",
+        duration: "Weeks 1–4",
+        color: "#00FF94",
+        description: "Get comfortable with AI tools and local setup",
+        weeklyHours: "4-7 hrs/week",
+        modules: [
+          {
+            title: "Local LLM Mastery",
+            icon: "🖥️",
+            topics: [
+              "llama.cpp setup & model management (you've started!)",
+              "Model selection — when to use 4B vs 14B vs 32B",
+              "Prompt engineering basics for local models",
+              "Ollama as an easier alternative to llama.cpp",
+              "OpenWebUI — a ChatGPT-like UI for local models",
+            ],
+            project: "Get a local chat interface running with OpenWebUI",
+            resources: ["ollama.com", "openwebui.com", "huggingface.co"],
+          },
+          {
+            title: "Claude API (Remote)",
+            icon: "⚡",
+            topics: [
+              "Anthropic API key setup & pricing basics",
+              "claude.ai vs API — when to use each",
+              "Your first API call in Python or Node.js",
+              "System prompts, temperature, and parameters",
+              "Claude vs local model — when each makes sense",
+            ],
+            project: "Build a simple command-line chatbot using the Claude API",
+            resources: ["docs.anthropic.com", "console.anthropic.com"],
+          },
+        ],
+      },
+      {
+        id: 2,
+        title: "Building",
+        duration: "Weeks 5–12",
+        color: "#FF6B35",
+        description: "Start shipping real projects",
+        weeklyHours: "4-7 hrs/week",
+        modules: [
+          {
+            title: "AI Workflows & Automation",
+            icon: "🔄",
+            topics: [
+              "n8n — open source workflow automation (self-hostable)",
+              "Make.com for no-code AI pipelines",
+              "Chaining prompts — multi-step AI reasoning",
+              "Webhooks & API integrations",
+              "Building a personal AI assistant workflow",
+            ],
+            project: "Build an email summariser workflow using Claude + n8n",
+            resources: ["n8n.io", "make.com", "zapier.com"],
+          },
+          {
+            title: "SaaS App Foundations",
+            icon: "🚀",
+            topics: [
+              "Next.js basics — the go-to SaaS framework",
+              "Supabase — database + auth made easy",
+              "Stripe — payment integration",
+              "Deploying to Vercel (free tier)",
+              "Structuring an AI-powered SaaS product",
+            ],
+            project: "Build a simple AI writing tool with auth and a paywall",
+            resources: ["nextjs.org", "supabase.com", "vercel.com"],
+          },
+          {
+            title: "Mobile App Basics",
+            icon: "📱",
+            topics: [
+              "React Native vs Flutter — picking your path",
+              "Expo — easiest way to start React Native",
+              "Calling the Claude API from a mobile app",
+              "Basic UI patterns for AI apps",
+              "Testing on your iPhone/Android",
+            ],
+            project: "Build a mobile AI chat app with Expo",
+            resources: ["expo.dev", "reactnative.dev"],
+          },
+        ],
+      },
+      {
+        id: 3,
+        title: "Scaling",
+        duration: "Weeks 13–24",
+        color: "#A78BFA",
+        description: "Go deeper, launch publicly, start monetising",
+        weeklyHours: "4-7 hrs/week",
+        modules: [
+          {
+            title: "Advanced AI Techniques",
+            icon: "🧠",
+            topics: [
+              "RAG — Retrieval Augmented Generation",
+              "Vector databases (Pinecone, pgvector)",
+              "Fine-tuning small models on your own data",
+              "Agents & tool use with Claude",
+              "Multi-modal — images + text workflows",
+            ],
+            project: "Build a document Q&A tool using RAG + Claude",
+            resources: ["langchain.com", "pinecone.io"],
+          },
+          {
+            title: "Launch & Monetise",
+            icon: "💰",
+            topics: [
+              "Product Hunt launch strategy",
+              "Pricing models for AI SaaS",
+              "Usage-based vs subscription billing",
+              "Basic marketing — SEO, X/Twitter, indie hacker communities",
+              "Handling API costs at scale",
+            ],
+            project: "Launch your SaaS publicly and get first 10 users",
+            resources: ["producthunt.com", "indiehackers.com", "tinylaunch.io"],
+          },
+          {
+            title: "Local LLM + SaaS Hybrid",
+            icon: "🔗",
+            topics: [
+              "When to use local vs cloud AI in your product",
+              "Offering local model support as a privacy feature",
+              "Self-hosted AI as a SaaS differentiator",
+              "Cost optimisation — local for dev, cloud for prod",
+              "Building a model-agnostic API layer",
+            ],
+            project: "Add local model support to your SaaS as a premium feature",
+            resources: ["openrouter.ai", "litellm.ai"],
+          },
+        ],
+      },
+    ];
+
+    const weeklyPlan = [
+      { day: "Mon", focus: "Learning", detail: "New concept or tutorial (1-1.5hr)" },
+      { day: "Tue", focus: "Building", detail: "Work on current project (1hr)" },
+      { day: "Wed", focus: "Rest", detail: "Optional — review notes" },
+      { day: "Thu", focus: "Building", detail: "Continue project or experiment (1hr)" },
+      { day: "Fri", focus: "Explore", detail: "Try new tools, read community posts (30min)" },
+      { day: "Sat", focus: "Deep Work", detail: "Longer build session if available (1-2hr)" },
+      { day: "Sun", focus: "Plan", detail: "Review week, set next week goals (15min)" },
+    ];
+
+    function StudyPlan() {
+      const [activePhase, setActivePhase] = useState(1);
+      const [expandedModule, setExpandedModule] = useState(null);
+      const currentPhase = phases.find((p) => p.id === activePhase);
+
+      return (
+        <div style={{ minHeight: "100vh", background: "#0A0A0F", color: "#E8E8F0", fontFamily: "'DM Mono', 'Courier New', monospace" }}>
+          {/* Header */}
+          <div style={{ borderBottom: "1px solid #1E1E2E", padding: "32px 24px 24px", background: "linear-gradient(180deg, #0D0D1A 0%, #0A0A0F 100%)" }}>
+            <div style={{ maxWidth: 800, margin: "0 auto" }}>
+              <div style={{ fontSize: 11, letterSpacing: "0.2em", color: "#00FF94", marginBottom: 8, textTransform: "uppercase" }}>
+                Personal AI Learning Roadmap
+              </div>
+              <h1 style={{ fontSize: "clamp(24px, 5vw, 36px)", fontWeight: 700, margin: "0 0 8px", letterSpacing: "-0.02em" }}>
+                From Local LLMs → SaaS
+              </h1>
+              <p style={{ color: "#6B6B8A", fontSize: 14 }}>
+                Intermediate · 4-7 hrs/week · 24 weeks · All goals
+              </p>
+            </div>
+          </div>
+
+          <div style={{ maxWidth: 800, margin: "0 auto", padding: "24px" }}>
+            {/* Phase Selector */}
+            <div style={{ display: "flex", gap: 8, marginBottom: 32, flexWrap: "wrap" }}>
+              {phases.map((phase) => (
+                <button key={phase.id}
+                  onClick={() => { setActivePhase(phase.id); setExpandedModule(null); }}
+                  style={{
+                    padding: "10px 20px", borderRadius: 6,
+                    border: `1px solid ${activePhase === phase.id ? phase.color : "#1E1E2E"}`,
+                    background: activePhase === phase.id ? phase.color + "15" : "transparent",
+                    color: activePhase === phase.id ? phase.color : "#6B6B8A",
+                    cursor: "pointer", fontSize: 13, fontFamily: "inherit",
+                    transition: "all 0.2s", letterSpacing: "0.05em",
+                  }}>
+                  Phase {phase.id} — {phase.title}
+                  <span style={{ marginLeft: 8, fontSize: 11, opacity: 0.7 }}>{phase.duration}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Phase Header */}
+            <div style={{
+              padding: "20px 24px", borderRadius: 10,
+              border: `1px solid ${currentPhase.color}30`,
+              background: currentPhase.color + "08", marginBottom: 24,
+              display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12,
+            }}>
+              <div>
+                <div style={{ color: currentPhase.color, fontSize: 12, letterSpacing: "0.15em", marginBottom: 4 }}>
+                  PHASE {currentPhase.id} · {currentPhase.duration.toUpperCase()}
+                </div>
+                <div style={{ fontSize: 18, fontWeight: 600 }}>{currentPhase.description}</div>
+              </div>
+              <div style={{
+                background: currentPhase.color + "20", border: `1px solid ${currentPhase.color}40`,
+                borderRadius: 6, padding: "6px 14px", fontSize: 12, color: currentPhase.color,
+              }}>
+                {currentPhase.weeklyHours}
+              </div>
+            </div>
+
+            {/* Modules */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 40 }}>
+              {currentPhase.modules.map((mod, i) => {
+                const isOpen = expandedModule === i;
+                return (
+                  <div key={i} style={{
+                    border: `1px solid ${isOpen ? currentPhase.color + "50" : "#1E1E2E"}`,
+                    borderRadius: 10, background: isOpen ? currentPhase.color + "06" : "#0D0D1A",
+                    transition: "all 0.2s", overflow: "hidden",
+                  }}>
+                    <button onClick={() => setExpandedModule(isOpen ? null : i)}
+                      style={{
+                        width: "100%", display: "flex", alignItems: "center",
+                        justifyContent: "space-between", padding: "18px 20px",
+                        background: "transparent", border: "none", color: "#E8E8F0",
+                        cursor: "pointer", fontFamily: "inherit", textAlign: "left",
+                      }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <span style={{ fontSize: 20 }}>{mod.icon}</span>
+                        <span style={{ fontSize: 15, fontWeight: 600 }}>{mod.title}</span>
+                        <span style={{ fontSize: 12, color: "#3D3D5C", marginLeft: 4 }}>{mod.topics.length} topics</span>
+                      </div>
+                      <span style={{ color: currentPhase.color, fontSize: 18, transform: isOpen ? "rotate(45deg)" : "rotate(0deg)", transition: "transform 0.2s", lineHeight: 1 }}>+</span>
+                    </button>
+
+                    {isOpen && (
+                      <div style={{ padding: "0 20px 20px" }}>
+                        <div style={{ marginBottom: 20 }}>
+                          <div style={{ fontSize: 11, color: "#6B6B8A", letterSpacing: "0.15em", marginBottom: 10 }}>TOPICS</div>
+                          {mod.topics.map((topic, j) => (
+                            <div key={j} style={{
+                              display: "flex", alignItems: "flex-start", gap: 10, padding: "7px 0",
+                              borderBottom: j < mod.topics.length - 1 ? "1px solid #1A1A28" : "none",
+                              fontSize: 13, color: "#C8C8E0", lineHeight: 1.5,
+                            }}>
+                              <span style={{ color: currentPhase.color, marginTop: 2, flexShrink: 0 }}>›</span>
+                              {topic}
+                            </div>
+                          ))}
+                        </div>
+                        <div style={{
+                          background: currentPhase.color + "12", border: `1px solid ${currentPhase.color}30`,
+                          borderRadius: 8, padding: "14px 16px", marginBottom: 16,
+                        }}>
+                          <div style={{ fontSize: 11, color: currentPhase.color, letterSpacing: "0.15em", marginBottom: 6 }}>🎯 PROJECT</div>
+                          <div style={{ fontSize: 13, color: "#E8E8F0", lineHeight: 1.5 }}>{mod.project}</div>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: 11, color: "#6B6B8A", letterSpacing: "0.15em", marginBottom: 8 }}>RESOURCES</div>
+                          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                            {mod.resources.map((r, j) => (
+                              <span key={j} style={{ padding: "4px 10px", borderRadius: 4, border: "1px solid #1E1E2E", fontSize: 12, color: "#6B6B8A" }}>{r}</span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Weekly Rhythm */}
+            <div style={{ marginBottom: 40 }}>
+              <div style={{ fontSize: 11, color: "#6B6B8A", letterSpacing: "0.15em", marginBottom: 16 }}>WEEKLY RHYTHM</div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))", gap: 8 }}>
+                {weeklyPlan.map((day, i) => (
+                  <div key={i} style={{ padding: "14px 12px", borderRadius: 8, border: "1px solid #1E1E2E", background: "#0D0D1A", textAlign: "center" }}>
+                    <div style={{ fontSize: 12, color: "#00FF94", fontWeight: 700, marginBottom: 4 }}>{day.day}</div>
+                    <div style={{ fontSize: 11, color: "#E8E8F0", marginBottom: 4 }}>{day.focus}</div>
+                    <div style={{ fontSize: 10, color: "#3D3D5C", lineHeight: 1.4 }}>{day.detail}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Key Principles */}
+            <div style={{ padding: "20px", borderRadius: 10, border: "1px solid #1E1E2E", background: "#0D0D1A" }}>
+              <div style={{ fontSize: 11, color: "#6B6B8A", letterSpacing: "0.15em", marginBottom: 14 }}>💡 KEY PRINCIPLES</div>
+              {[
+                "Ship something every 2 weeks — even if tiny. Momentum beats perfection.",
+                "Use Claude to help you code. You have the API, use it as your pair programmer.",
+                "Your M1 Max (32GB) is your local AI lab. Your 3080 PC is your CUDA playground.",
+                "Document what you build — even a simple README. It becomes your portfolio.",
+                "Join indie hacker communities early — feedback is more valuable than perfect code.",
+              ].map((tip, i) => (
+                <div key={i} style={{
+                  display: "flex", gap: 10, padding: "8px 0",
+                  borderBottom: i < 4 ? "1px solid #1A1A28" : "none",
+                  fontSize: 13, color: "#C8C8E0", lineHeight: 1.5,
+                }}>
+                  <span style={{ color: "#A78BFA", flexShrink: 0 }}>→</span>
+                  {tip}
+                </div>
+              ))}
+            </div>
+
+            <div style={{ textAlign: "center", marginTop: 32, fontSize: 11, color: "#3D3D5C" }}>
+              Built for your journey · Start with Phase 1 · Adjust as you go
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<StudyPlan />);
+  </script>
+
+</body>
+</html>
